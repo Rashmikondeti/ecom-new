@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="background: #e3f2fd; padding: 60px 0;">  <!-- Light Blue Background -->
+  <div class="container">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-lg border-0 rounded-4 p-5" style="background: #ffffff;">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary" style="font-family: 'Segoe UI', sans-serif;">
+           Welcome to the Library Management System
+        </h2>
+        <p class="text-muted">Your gateway to organized knowledge and efficient book tracking.</p>
+      </div>
+
+      <div class="text-center">
+        <img src="{% static 'base/images/library.jpeg' %}"
+             alt="Library Image"
+             class="img-fluid rounded-4 shadow"
+             style="max-width: 800px; width: 100%; height: auto;">
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

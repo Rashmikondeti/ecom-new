@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5" style="background-color: #e6f7ff;">
+    <h2 class="text-center mb-4 text-primary font-weight-bold">ADMIN DASHBOARD</h2>
+
+    <div class="row text-center justify-content-center">
+        <!-- Books Listed -->
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'book_list' %}" style="text-decoration: none;">
+                <div class="card shadow p-3">
+                    <i class="fa fa-book fa-2x mb-2 text-success"></i>
+                    <h4>{{ books_count }}</h4>
+                    <p>Books Listed</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Times Book Issued -->
+        <div class="col-md-4 mb-3">
+    <a href="{% url 'issued_books' %}" style="text-decoration: none;">
+        <div class="card shadow p-3">
+            <i class="fa fa-share fa-2x mb-2 text-primary"></i>
+            <h4>{{ issues_count }}</h4>
+            <p>Times Book Issued</p>
+        </div>
+    </a>
+</div>
+
+        <!-- Times Book Returned -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow p-3">
+                <i class="fa fa-recycle fa-2x mb-2 text-warning"></i>
+                <h4>{{ returns_count }}</h4>
+                <p>Times Books Returned</p>
+            </div>
+        </div>
+
+        <!-- Registered Users -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow p-3">
+                <i class="fa fa-users fa-2x mb-2 text-danger"></i>
+                <h4>{{ users_count }}</h4>
+                <p>Registered Users</p>
+            </div>
+        </div>
+
+        <!-- Authors Listed -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow p-3">
+                <i class="fa fa-user fa-2x mb-2 text-info"></i>
+                <h4>{{ authors_count }}</h4>
+                <p>Authors Listed</p>
+            </div>
+        </div>
+
+        <!-- Listed Categories -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow p-3">
+                <i class="fa fa-tags fa-2x mb-2 text-secondary"></i>
+                <h4>{{ categories_count }}</h4>
+                <p>Listed Categories</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional Banner Image -->
+    <div class="text-center mt-4">
+        <img src="{% static 'base/images/book.jpg' %}" alt="Library Banner" class="img-fluid" style="border-radius: 10px;">
+    </div>
+</div>
+{% endblock %}
