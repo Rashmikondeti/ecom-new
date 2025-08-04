@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f0f8ff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .authors-card {
+        max-width: 900px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px 50px;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .authors-title {
+        font-size: 32px;
+        font-weight: 800;
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .table {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    thead {
+        background-color: #0d6efd;
+        color: white;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+
+    tbody tr {
+        transition: background-color 0.3s ease;
+    }
+
+    tbody tr:hover {
+        background-color: #e3f2fd;
+    }
+
+    td, th {
+        vertical-align: middle !important;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .no-authors {
+        font-style: italic;
+        color: #888;
+        padding: 20px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .authors-card {
+            padding: 20px;
+        }
+
+        .authors-title {
+            font-size: 24px;
+        }
+
+        td, th {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="authors-card">
+    <h2 class="authors-title">Authors Listed</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Author Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ author.name }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center no-authors">No authors found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

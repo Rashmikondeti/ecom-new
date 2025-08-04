@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.contrib.auth.models import User
+
 
 # User Profile for Email Verification
 class Profile(models.Model):
@@ -45,21 +48,30 @@ class Issue(models.Model):
     def __str__(self):
         return f"Issue: {self.user.username} → {self.book.title}"
 
-# Book Return model
-class Return(models.Model):
-    issue = models.OneToOneField(Issue, on_delete=models.CASCADE)
-    return_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Return: {self.issue.book.title} by {self.issue.user.username}"
 
 # Optional fallback model
+# models.py
+
 # models.py
 class BookIssue(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     issue_date = models.DateField(auto_now_add=True)
-    return_date = models.DateField(null=True, blank=True)  # Allow empty for not-yet-returned
+    return_date = models.DateField(null=True, blank=True)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.book.title} issued to {self.user.username}"
+
+
+class Return(models.Model):
+    issue = models.OneToOneField(Issue, on_delete=models.CASCADE)
+    return_date = models.DateTimeField(auto_now_add=True)
+
+    def calculate_fine(self):
+        if self.return_date.date() > self.issue.due_date.date():
+            days_late = (self.return_date.date() - self.issue.due_date.date()).days
+            return days_late * 10  # ₹10 per day late
+        return 0
+
+
+

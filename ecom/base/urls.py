@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from base import views
 from django.contrib.auth import views as auth_views
-
+from .views import returned_books_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -17,4 +17,11 @@ urlpatterns = [
     path('books/delete/<int:pk>/', views.delete_book_view, name='delete_book'),
     path('issue-book/<int:pk>/', views.issue_book, name='issue_book'),
     path('issued-books/', views.issued_books_view, name='issued_books'),
+    path('returned-books/', views.returned_books_view, name='returned_books'),
+    path('registered-users/', views.registered_users, name='registered_users'),
+    path('authors-listed/', views.authors_listed, name='authors_listed'),
+    path('listed-categories/', views.listed_categories, name='listed_categories'),
+
+
 ]
+

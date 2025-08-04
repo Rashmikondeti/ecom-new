@@ -6,3 +6,8 @@ from django.contrib.auth.admin import UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
+from django.contrib import admin
+from .models import Book, BookIssue
+
+admin.site.register(Book)
+admin.site.register(BookIssue)

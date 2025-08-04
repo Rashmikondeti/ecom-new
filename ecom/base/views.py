@@ -1,14 +1,20 @@
+from datetime import timedelta
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import Book, Author, Category, Issue, Return, Profile
-from .forms import CustomUserCreationForm, BookForm
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book, BookIssue
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+
+from .models import (
+    Book, Author, Category, Issue, Return, Profile, BookIssue
+)
+from .forms import CustomUserCreationForm, BookForm
+
+# -------------------- AUTH + HOME ----------------------
 
 def home(request):
     return render(request, 'base/home.html')
@@ -51,9 +57,10 @@ def activation_email(request):
         user_profile.save()
         messages.success(request, 'Email Verified Successfully!')
         return redirect('login')
-    except Exception as e:
+    except Exception:
         return HttpResponse('Invalid email token')
 
+# -------------------- DASHBOARD ----------------------
 
 @login_required
 def dashboard_view(request):
@@ -67,6 +74,7 @@ def dashboard_view(request):
     }
     return render(request, 'base/dashboard.html', context)
 
+# -------------------- BOOK CRUD ----------------------
 
 @login_required
 def add_book_view(request):
@@ -127,31 +135,75 @@ def book_list_view(request):
     books = Book.objects.all()
     return render(request, 'base/book_list.html', {'books': books})
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book, BookIssue
+# -------------------- ISSUE & RETURN ----------------------
 
-# View to issue a book to the currently logged-in user
 @login_required
 def issue_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
+    users = User.objects.all()
 
     if request.method == 'POST':
-        already_issued = BookIssue.objects.filter(user=request.user, book=book).exists()
+        user_id = request.POST.get('user')
+        selected_user = get_object_or_404(User, id=user_id)
+
+        already_issued = Issue.objects.filter(user=selected_user, book=book).exists()
         if already_issued:
-            messages.warning(request, "You've already issued this book.")
+            messages.warning(request, f"{selected_user.username} has already issued this book.")
         else:
-            BookIssue.objects.create(user=request.user, book=book)
-            messages.success(request, "Book issued successfully!")
+            Issue.objects.create(user=selected_user, book=book, due_date=timezone.now() + timedelta(days=7))
+            messages.success(request, f"Book issued to {selected_user.username} successfully!")
         return redirect('book_list')
 
-    return HttpResponse("Invalid request method", status=405)
+    return render(request, 'base/issue_book_form.html', {'book': book, 'users': users})
 
-
-# View to list all issued books
-from .models import BookIssue
 
 @login_required
 def issued_books_view(request):
-    issued_books = BookIssue.objects.select_related('book', 'user').all()
-    return render(request, 'base/issued_books.html', {'issued_books': issued_books})
+    issued_books = Issue.objects.select_related('book', 'user')
+    returns = {r.issue.id: r.return_date for r in Return.objects.all()}
+    return render(request, 'base/issued_books.html', {'issued_books': issued_books, 'returns': returns})
+
+
+@login_required
+def return_book(request, issue_id):
+    issue = get_object_or_404(Issue, id=issue_id)
+
+    if Return.objects.filter(issue=issue).exists():
+        messages.warning(request, "Book already returned.")
+    else:
+        Return.objects.create(issue=issue)
+        messages.success(request, "Book returned successfully!")
+
+    return redirect('issued_books')
+
+# -------------------- NEW: VIEW RETURNED BOOKS ----------------------
+
+from django.shortcuts import render
+from .models import Return
+
+def returned_books_view(request):
+    returned_issues = Return.objects.select_related('issue__book', 'issue__user')
+    return render(request, 'base/returned_books.html', {'returned_issues': returned_issues})
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def registered_users(request):
+    users = User.objects.all().order_by('-date_joined')
+    return render(request, 'base/registered_users.html', {'users': users})
+from .models import Author
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def authors_listed(request):
+    authors = Author.objects.all()
+    return render(request, 'base/authors_listed.html', {'authors': authors})
+from .models import Category  # Assuming your model is Category
+
+@login_required
+def listed_categories(request):
+    categories = Category.objects.all()
+    return render(request, 'base/listed_categories.html', {'categories': categories})
+

@@ -1,24 +1,143 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-5">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f7faff;
+    }
 
-    <!-- Back to Admin Dashboard button -->
-    <div class="mb-3">
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
-            ← Back to Admin Dashboard
-        </a>
-    </div>
+    .books-container {
+        max-width: 1150px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+        padding: 40px 50px;
+        animation: fadeIn 0.6s ease-in-out;
+    }
 
-    <!-- Page heading and Add Book button -->
-    <div class="d-flex justify-content-between align-items-center">
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .header-row h3 {
+        font-size: 26px;
+        color: #343a40;
+        font-weight: 700;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        border: none;
+        padding: 8px 20px;
+        font-weight: 500;
+        font-size: 15px;
+        border-radius: 6px;
+    }
+
+    .btn-outline-secondary {
+        padding: 6px 15px;
+        font-size: 14px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    .table {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background-color: #6610f2;
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 15px;
+    }
+
+    .btn-sm {
+        font-size: 13px;
+        padding: 6px 10px;
+        margin: 2px;
+        border-radius: 4px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border: none;
+        color: #000;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .text-muted {
+        text-align: center;
+        font-size: 15px;
+        color: #777;
+        margin-top: 30px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .books-container {
+            padding: 25px 20px;
+        }
+
+        .header-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .table td, .table th {
+            font-size: 13px;
+        }
+    }
+</style>
+
+<div class="books-container">
+    <!-- Back to Admin Dashboard -->
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+        ← Back to Admin Dashboard
+    </a>
+
+    <!-- Header -->
+    <div class="header-row">
         <h3>Books in Library</h3>
         <a href="{% url 'add_book' %}" class="btn btn-primary">➕ Add Book</a>
     </div>
 
     {% if books %}
-    <table class="table table-bordered mt-3">
-        <thead class="table-light">
+    <table class="table table-bordered table-striped">
+        <thead>
             <tr>
                 <th>Title</th>
                 <th>Author</th>
@@ -35,14 +154,14 @@
                 <td>
                     <a href="{% url 'edit_book' book.pk %}" class="btn btn-sm btn-warning">Edit</a>
                     <a href="{% url 'delete_book' book.pk %}" class="btn btn-sm btn-danger">Delete</a>
-                    <a href="{% url 'issue_book' book.pk %}" class="btn btn-sm btn-success mt-1">Issue</a>
+                    <a href="{% url 'issue_book' book.pk %}" class="btn btn-sm btn-success">Issue</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     {% else %}
-    <p class="text-muted mt-3">No books available.</p>
+    <p class="text-muted">No books available.</p>
     {% endif %}
 </div>
 {% endblock %}

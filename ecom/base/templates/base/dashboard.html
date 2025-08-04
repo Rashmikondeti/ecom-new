@@ -19,49 +19,57 @@
 
         <!-- Times Book Issued -->
         <div class="col-md-4 mb-3">
-    <a href="{% url 'issued_books' %}" style="text-decoration: none;">
-        <div class="card shadow p-3">
-            <i class="fa fa-share fa-2x mb-2 text-primary"></i>
-            <h4>{{ issues_count }}</h4>
-            <p>Times Book Issued</p>
+            <a href="{% url 'issued_books' %}" style="text-decoration: none;">
+                <div class="card shadow p-3">
+                    <i class="fa fa-share fa-2x mb-2 text-primary"></i>
+                    <h4>{{ issues_count }}</h4>
+                    <p>Times Book Issued</p>
+                </div>
+            </a>
         </div>
-    </a>
-</div>
 
         <!-- Times Book Returned -->
         <div class="col-md-4 mb-3">
-            <div class="card shadow p-3">
-                <i class="fa fa-recycle fa-2x mb-2 text-warning"></i>
-                <h4>{{ returns_count }}</h4>
-                <p>Times Books Returned</p>
-            </div>
+            <a href="{% url 'returned_books' %}" style="text-decoration: none;">
+                <div class="card shadow p-3">
+                    <i class="fa fa-recycle fa-2x mb-2 text-warning"></i>
+                    <h4>{{ returns_count }}</h4>
+                    <p>Times Books Returned</p>
+                </div>
+            </a>
         </div>
 
-        <!-- Registered Users -->
+        <!-- Registered Users (clickable) -->
         <div class="col-md-4 mb-3">
-            <div class="card shadow p-3">
-                <i class="fa fa-users fa-2x mb-2 text-danger"></i>
-                <h4>{{ users_count }}</h4>
-                <p>Registered Users</p>
-            </div>
+            <a href="{% url 'registered_users' %}" style="text-decoration: none;">
+                <div class="card shadow p-3">
+                    <i class="fa fa-users fa-2x mb-2 text-danger"></i>
+                    <h4>{{ users_count }}</h4>
+                    <p>Registered Users</p>
+                </div>
+            </a>
         </div>
 
-        <!-- Authors Listed -->
+        <!-- Authors Listed (clickable) -->
         <div class="col-md-4 mb-3">
-            <div class="card shadow p-3">
-                <i class="fa fa-user fa-2x mb-2 text-info"></i>
-                <h4>{{ authors_count }}</h4>
-                <p>Authors Listed</p>
-            </div>
+            <a href="{% url 'authors_listed' %}" style="text-decoration: none;">
+                <div class="card shadow p-3">
+                    <i class="fa fa-user fa-2x mb-2 text-info"></i>
+                    <h4>{{ authors_count }}</h4>
+                    <p>Authors Listed</p>
+                </div>
+            </a>
         </div>
 
-        <!-- Listed Categories -->
+        <!-- Listed Categories (clickable) -->
         <div class="col-md-4 mb-3">
-            <div class="card shadow p-3">
-                <i class="fa fa-tags fa-2x mb-2 text-secondary"></i>
-                <h4>{{ categories_count }}</h4>
-                <p>Listed Categories</p>
-            </div>
+            <a href="{% url 'listed_categories' %}" style="text-decoration: none;">
+                <div class="card shadow p-3">
+                    <i class="fa fa-tags fa-2x mb-2 text-secondary"></i>
+                    <h4>{{ categories_count }}</h4>
+                    <p>Listed Categories</p>
+                </div>
+            </a>
         </div>
     </div>
 
