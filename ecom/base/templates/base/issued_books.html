@@ -89,6 +89,12 @@
 </style>
 
 <div class="issued-books-container">
+    <div class="d-flex justify-content-start mb-3">
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+        ← Back to Admin Dashboard
+    </a>
+</div>
+
     <h2 class="issued-title">Issued Books</h2>
     {% if issued_books %}
         <table class="table table-striped table-bordered">
